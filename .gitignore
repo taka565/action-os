@@ -4,3 +4,7 @@ node_modules/
 *.tar.gz
 *.zip
 .DS_Store
+_site/
+.env
+.env.*
+!.env.example

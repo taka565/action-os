@@ -2,6 +2,26 @@
 
 2026年10月20日版。成人の救命対応を中心に、1事案を1ページで操作する端末保存型Webアプリです。
 
+## 公開サイトとGit管理
+
+- 公開サイト：[ACTION OS](https://taka565.github.io/action-os/)
+- ソースコード：[taka565/action-os](https://github.com/taka565/action-os)
+- 公開状況：[GitHub Actions](https://github.com/taka565/action-os/actions/workflows/pages.yml)
+
+GitHub Pagesで公開します。閲覧時のログインは不要で、ソースコードも公開です。事案記録は各利用者のブラウザー内に保存され、GitHubのリポジトリやサーバーへ送信されません。
+
+`main` にpushすると、構文確認と自動テストに成功した版だけを公開します。Pull Requestでは検証だけを実行します。公開対象は `dist` から生成した `_site` の画面ファイルです。
+
+```powershell
+git add dist README.md
+git commit -m "Update ACTION OS"
+git push origin main
+```
+
+公開ごとにGitのコミットIDをオフラインキャッシュ名へ設定します。新版の取得後、開いているACTION OSのタブをすべて閉じて再度開くと切り替わります。処置中の画面を強制更新する処理はありません。
+
+以前のChatGPT Sites版やローカル版とは保存領域が異なります。既存の事案記録を移す場合は、以前の画面でJSONを書き出し、新しい公開サイトで復元してください。
+
 ## 起動
 
 Node.jsがある端末で、このフォルダーを開きます。追加パッケージのインストールは不要です。
@@ -82,4 +102,6 @@ npm run check
 | `tests/model.test.mjs` | 医療状態、履歴、保存失敗、復元のテスト |
 | `server.mjs` | ローカル静的HTTPサーバー |
 
-本番の画面更新時はService Workerのキャッシュ名を更新し、旧キャッシュを利用中の事案へ不用意に新コードを割り込ませないでください。ローカル開発では同一オリジンのネットワークを優先し、取得できない場合にキャッシュを使います。
+GitHub Pagesでは `scripts/prepare-pages.mjs` が公開用コピーのキャッシュ名を自動更新します。他の公開先へ `dist` を直接配信する場合はService Workerのキャッシュ名を更新し、旧キャッシュを利用中の事案へ不用意に新コードを割り込ませないでください。ローカル開発では同一オリジンのネットワークを優先し、取得できない場合にキャッシュを使います。
+
+公開ワークフローは [GitHub Pagesの公式手順](https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)に基づいています。
