@@ -1,6 +1,7 @@
 const CACHE='action-os-shell-v1';
 const FILES=['./','./index.html','./app.js','./model.js','./templates.js','./style.css','./icon.svg','./manifest.webmanifest'];
-self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
+// Fetch current files when installing a new version, even if the HTTP cache has older files.
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES.map(path=>new Request(new URL(path,self.location.href),{cache:'reload'}))))));
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',event=>{
   const url=new URL(event.request.url);
